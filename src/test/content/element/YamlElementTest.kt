@@ -6,6 +6,12 @@ import org.junit.Test
 class YamlElementTest {
 
     @Test
+    fun `yaml header test`() {
+        val header = "my_header"
+        assert(YamlHeader(header).asYaml() == "$header:")
+    }
+
+    @Test
     fun `yaml anchor test`() {
         val anchorName = "my_anchor"
         assert(YamlAnchor(anchorName).asYaml() == "&$anchorName")
@@ -35,5 +41,13 @@ class YamlElementTest {
     fun `yaml tag test`() {
         val tagName = "my_tag"
         assert(YamlTag(tagName).asYaml() == "!!$tagName")
+    }
+
+    @Test
+    fun `yaml pair test`() {
+        val key = "my_key"
+        val value = "my_value"
+        assert(YamlPair(key, value).asYaml() == "$key: $value")
+        assert(YamlPair(key, value, false).asYaml() == "$key $value")
     }
 }

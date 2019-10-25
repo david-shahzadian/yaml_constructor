@@ -22,6 +22,16 @@ abstract class YamlElement : YamlContent {
 }
 
 /**
+ * Yaml element of type [header]:
+ */
+class YamlHeader(val header: String) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        builder.content(header)
+        builder.colonSymbol()
+    }
+}
+
+/**
  * Yaml element of type &[anchorName]
  */
 class YamlAnchor(val anchorName: String) : YamlElement() {
@@ -71,5 +81,20 @@ class YamlTag(val tagName: String) : YamlElement() {
     override fun onContentBuild(builder: YamlContentBuilder) {
         builder.tagSymbol()
         builder.content(tagName)
+    }
+}
+
+/**
+ * Yaml element of type [key]: [value]
+ * @param withColonSeparator if false the element will be of type [key] [value]
+ */
+class YamlPair(val key: String, val value: String, val withColonSeparator: Boolean = true) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        builder.content(key)
+        if (withColonSeparator) {
+            builder.colonSymbol()
+        }
+        builder.indentSymbol()
+        builder.content(value)
     }
 }
