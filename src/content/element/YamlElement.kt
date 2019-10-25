@@ -110,15 +110,25 @@ class YamlTag(val tagName: String) : YamlElement() {
 /**
  * Yaml element of type [key]: [value]
  * @param withColonSeparator if false the element will be of type [key] [value]
+ * @param withQuotedValue if true the element will be of type [key]: "[value]"
  */
-class YamlPair(val key: String, val value: String, val withColonSeparator: Boolean = true) : YamlElement() {
+class YamlPair(
+    val key: String,
+    val value: String,
+    val withColonSeparator: Boolean = true,
+    val withQuotedValue: Boolean = false
+) : YamlElement() {
     override fun onContentBuild(builder: YamlContentBuilder) {
         builder.content(key)
         if (withColonSeparator) {
             builder.colonSymbol()
         }
         builder.indentSymbol()
-        builder.content(value)
+        builder.content(valueContent())
+    }
+
+    private fun valueContent(): String {
+        return if (withQuotedValue) "\"$value\"" else value
     }
 }
 

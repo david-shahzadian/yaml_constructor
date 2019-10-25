@@ -63,6 +63,7 @@ class YamlElementTest {
         val value = "my_value"
         assert(YamlPair(key, value).asYaml() == "$key: $value")
         assert(YamlPair(key, value, false).asYaml() == "$key $value")
+        assert(YamlPair(key, value, withColonSeparator = true, withQuotedValue = true).asYaml() == "$key: \"$value\"")
     }
 
 
