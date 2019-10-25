@@ -42,6 +42,17 @@ class YamlAnchor(val anchorName: String) : YamlElement() {
 }
 
 /**
+ * Yaml element of type - &${anchor.name}
+ */
+class YamlArrayAnchor(val anchor: YamlAnchor) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        builder.arrayPrefixSymbol()
+        builder.indentSymbol()
+        builder.content(anchor.asYaml())
+    }
+}
+
+/**
  * Yaml element of type *${anchor.name}
  */
 class YamlAnchorLink(val anchor: YamlAnchor) : YamlElement() {
@@ -96,5 +107,34 @@ class YamlPair(val key: String, val value: String, val withColonSeparator: Boole
         }
         builder.indentSymbol()
         builder.content(value)
+    }
+}
+
+/**
+ * Yaml element of type
+ * $element[0]
+ * $element[1]
+ * ...
+ */
+class YamlMultiLine(val lines: List<String>) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        lines
+            .forEachIndexed { index, line ->
+                builder.content(line)
+                if (index != lines.lastIndex) {
+                    builder.newLineSymbol()
+                }
+            }
+    }
+}
+
+/**
+ * Yaml element of type # [comment]
+ */
+class YamlComment(val comment: String) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        builder.commentSymbol()
+        builder.indentSymbol()
+        builder.content(comment)
     }
 }
