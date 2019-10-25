@@ -44,6 +44,25 @@ class YamlHeader(val header: String) : YamlElement() {
 }
 
 /**
+ * Yaml element of type [header]: !![tag]
+ * @param withColonSeparator if false element will be of type [header] !![tag]
+ */
+class YamlTaggedHeader(
+    val header: String,
+    val tag: YamlTag,
+    val withColonSeparator: Boolean = true
+) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        builder.content(header)
+        if (withColonSeparator) {
+            builder.colonSymbol()
+        }
+        builder.indentSymbol()
+        builder.content(tag.asYaml())
+    }
+}
+
+/**
  * Yaml element of type &[anchorName]
  */
 class YamlAnchor(val anchorName: String) : YamlElement() {

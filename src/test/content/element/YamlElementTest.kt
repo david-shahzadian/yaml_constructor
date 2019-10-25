@@ -19,6 +19,15 @@ class YamlElementTest {
     }
 
     @Test
+    fun `yaml tagged header test`() {
+        val header = "my_header"
+        val tag = YamlTag("my_tag")
+        assert(YamlTaggedHeader(header, tag).asYaml() == "$header: !!${tag.tagName}")
+        assert(YamlTaggedHeader(header, tag, false).asYaml() == "$header !!${tag.tagName}")
+
+    }
+
+    @Test
     fun `yaml anchor test`() {
         val anchorName = "my_anchor"
         assert(YamlAnchor(anchorName).asYaml() == "&$anchorName")
