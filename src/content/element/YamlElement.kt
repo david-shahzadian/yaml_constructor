@@ -1,5 +1,6 @@
 package content.element
 
+import constant.YamlSymbol
 import content.base.YamlContent
 import content.base.YamlContentBuilder
 
@@ -19,6 +20,17 @@ abstract class YamlElement : YamlContent {
      * When realizing this function all the content should be added via [builder]
      */
     protected abstract fun onContentBuild(builder: YamlContentBuilder)
+}
+
+/**
+ * Yaml element of type # [comment]
+ */
+class YamlComment(val comment: String) : YamlElement() {
+    override fun onContentBuild(builder: YamlContentBuilder) {
+        builder.commentSymbol()
+        builder.indentSymbol()
+        builder.content(comment)
+    }
 }
 
 /**
@@ -129,12 +141,22 @@ class YamlMultiLine(val lines: List<String>) : YamlElement() {
 }
 
 /**
- * Yaml element of type # [comment]
+ * Yaml element of type
+ * $element[0]
+ *   $element[1]
+ *     $element[2]
+ * ...
  */
-class YamlComment(val comment: String) : YamlElement() {
+class YamlNestedLines(val lines: List<String>) : YamlElement() {
     override fun onContentBuild(builder: YamlContentBuilder) {
-        builder.commentSymbol()
-        builder.indentSymbol()
-        builder.content(comment)
+        lines
+            .forEachIndexed { index, line ->
+                var indents = ""
+                repeat(index) { indents += YamlSymbol.TAB }
+                builder.content(line.prependIndent(indents))
+                if (index != lines.lastIndex) {
+                    builder.newLineSymbol()
+                }
+            }
     }
 }
