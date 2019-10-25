@@ -1,4 +1,4 @@
-package content
+package content.base
 
 import constant.YamlSymbol.ANCHOR
 import constant.YamlSymbol.ANCHOR_LINK
@@ -19,37 +19,37 @@ class YamlContentBuilder {
     fun content(content: String) =
         apply { content.appendToContent() }
 
-    fun indent() =
+    fun indentSymbol() =
         apply { INDENT.appendToContent() }
 
-    fun anchor() =
+    fun anchorSymbol() =
         apply { ANCHOR.appendToContent() }
 
-    fun anchorLink() =
+    fun anchorLinkSymbol() =
         apply { ANCHOR_LINK.appendToContent() }
 
-    fun anchorOverride() =
+    fun anchorOverrideSymbol() =
         apply { ANCHOR_OVERRIDE.appendToContent() }
 
-    fun tag() =
+    fun tagSymbol() =
         apply { TAG.appendToContent() }
 
-    fun quote() =
+    fun quoteSymbol() =
         apply { QUOTE.appendToContent() }
 
-    fun comment() =
+    fun commentSymbol() =
         apply { COMMENT.appendToContent() }
 
-    fun tab() =
+    fun tabSymbol() =
         apply { TAB.appendToContent() }
 
-    fun arrayPrefix() =
+    fun arrayPrefixSymbol() =
         apply { ARRAY_PREFIX.appendToContent() }
 
-    fun colon() =
+    fun colonSymbol() =
         apply { COLON.appendToContent() }
 
-    fun newLine() =
+    fun newLineSymbol() =
         apply { NEW_LINE.appendToContent() }
 
     fun build(): String = finalContent
